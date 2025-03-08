@@ -2,5 +2,10 @@ html, body {
     height: 100dvh; 
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
+
+.card {
+    max-width: 450px;
+    width: 100%; 
+}
+

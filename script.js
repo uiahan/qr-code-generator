@@ -31,15 +31,27 @@ function downloadQR() {
     let qrImage = document.querySelector("#qrcode img");
 
     if (qrImage) {
-        let link = document.createElement("a");
-        link.href = qrImage.src; 
-        link.download = "qr-code.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        let canvas = document.createElement("canvas");
+        let context = canvas.getContext("2d");
+
+        canvas.width = qrImage.width + 20;
+        canvas.height = qrImage.height + 20;
+        
+        context.fillStyle = "#ffffff"; 
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        let img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = qrImage.src;
+        img.onload = function () {
+            context.drawImage(img, 10, 10, qrImage.width, qrImage.height);
+
+            let link = document.createElement("a");
+            link.href = canvas.toDataURL("image/png");
+            link.download = "qr-code.png";
+            link.click();
+        };
     } else {
         alert("Buat QR Code dulu sebelum download!");
     }
 }
-
-
