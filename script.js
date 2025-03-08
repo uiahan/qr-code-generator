@@ -28,29 +28,16 @@ function generateQR() {
 }
 
 function downloadQR() {
-    let qrImage = document.querySelector("#qrcode img");
+    let svg = document.querySelector("#qrcode svg");
 
-    if (qrImage) {
-        let canvas = document.createElement("canvas");
-        let context = canvas.getContext("2d");
+    if (svg) {
+        let serializer = new XMLSerializer();
+        let svgBlob = new Blob([serializer.serializeToString(svg)], { type: "image/svg+xml" });
 
-        canvas.width = qrImage.width + 20;
-        canvas.height = qrImage.height + 20;
-        
-        context.fillStyle = "#ffffff"; 
-        context.fillRect(0, 0, canvas.width, canvas.height);
-
-        let img = new Image();
-        img.crossOrigin = "anonymous";
-        img.src = qrImage.src;
-        img.onload = function () {
-            context.drawImage(img, 10, 10, qrImage.width, qrImage.height);
-
-            let link = document.createElement("a");
-            link.href = canvas.toDataURL("image/png");
-            link.download = "qr-code.png";
-            link.click();
-        };
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(svgBlob);
+        link.download = "qr-code.svg";
+        link.click();
     } else {
         alert("Buat QR Code dulu sebelum download!");
     }
