@@ -29,15 +29,17 @@ function generateQR() {
 
 function downloadQR() {
     let qrImage = document.querySelector("#qrcode img");
+
     if (qrImage) {
         let link = document.createElement("a");
-        link.href = qrImage.src;
-        link.download = "qrcode.png";
+        link.href = qrImage.src; 
+        link.download = "qr-code.png";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     } else {
-        alert("Generate QR dulu sebelum download!")
+        alert("Buat QR Code dulu sebelum download!");
     }
 }
+
 
