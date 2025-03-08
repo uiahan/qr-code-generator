@@ -12,7 +12,9 @@ function generateQR() {
             width: 200,
             height: 200,
             colorDark: color,
-            colorLight: bgColor
+            colorLight: bgColor,
+            correctLevel: QRCode.CorrectLevel.H,
+            useSVG: true 
         });
         setTimeout(() => {
             let qrImage = document.querySelector("#qrcode img");
@@ -28,17 +30,17 @@ function generateQR() {
 }
 
 function downloadQR() {
-    let svg = document.querySelector("#qrcode svg");
+    let qrCanvas = document.querySelector("#qrcode canvas");
 
-    if (svg) {
-        let serializer = new XMLSerializer();
-        let svgBlob = new Blob([serializer.serializeToString(svg)], { type: "image/svg+xml" });
-
-        let link = document.createElement("a");
-        link.href = URL.createObjectURL(svgBlob);
-        link.download = "qr-code.svg";
-        link.click();
-    } else {
-        alert("Buat QR Code dulu sebelum download!");
+    if (!qrCanvas) {
+        alert("Buat dulu QR Code sebelum mendownload!");
+        return;
     }
+
+    let link = document.createElement("a");
+    link.href = qrCanvas.toDataURL("image/png");
+    link.download = "qrcode.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
